@@ -1,7 +1,8 @@
-// firebase.js
+// src/firebase.js
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBRdMUPXq_tBGfHJbaiUyY4GCR3YCbzV3s",
@@ -15,11 +16,14 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-// Initialize Firebase Authentication and get a reference to the service
+const analytics = getAnalytics(app);
 const auth = getAuth(app);
-
-// Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
 
-export { auth, db };
+// Google Sign-In function
+const signInWithGoogle = () => {
+  const provider = new GoogleAuthProvider();
+  return signInWithPopup(auth, provider);
+};
+
+export { auth, db, signInWithGoogle };
